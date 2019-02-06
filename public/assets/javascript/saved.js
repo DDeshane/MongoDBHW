@@ -79,9 +79,10 @@ $(document).ready(function () {
                 "</li>"
             ].join("");
             notesToRender.push(currentNote);
-        }else{
+        }
+        else{
             //If we do have notes, go through each one
-            for (var i=0;i<data.notes.length; i++){
+            for (var i = 0;i < data.notes.length; i++){
                 //Constructs an Li element to contain our noteText and a delete button
                 currentNote= $([
                     "<li class='list-group-item note'>",
@@ -96,9 +97,8 @@ $(document).ready(function () {
             }
         }
         //Now append the notesToRender to the note-container inside the note modal
-        $(".not-container").append(notesToRender);
+        $(".note-container").append(notesToRender);
             }
-        },
 
     function handleArticleDelete() {
         //This function handles deleting articles/headlines
@@ -139,7 +139,7 @@ $(document).ready(function () {
             bootbox.dialog({
                 message: modalText,
                 closeButton: true
-            });han
+            });
             var noteData = {
                 _id:currentArticle._id,
                 notes:data || []
@@ -164,10 +164,31 @@ $(document).ready(function () {
         //and post it to the "/api/notes" route and send the formatted noteData as well
         if (newNote){
             noteData={
-                
+                _id:$(this).data("article")._id,
+                noteText: newNote
+            };
+            $.post("/api/notes",noteData).then(function(){
+                //when complete, close the modal
+                bootbox.hideAll();
+            });       
             }
         }
-    }
+        function handleNoteDelete(){
+            //This note handles the deletion of notes
+            //First we grab the id of the note we want to delete
+            //We store this data on the delete button when we create it
+            var noteToDelete = $(this).data("_id");
+            //Perform a Delete request to "/api/notes/" with the id of the note we're deleting as a 
+            //parameter
+            $.ajax({
+                url:"/api/notes/" + noteToDelete,
+                method:"Delete"
+            }).then(function(){
+                //when done, hide the modal
+                bootbox.hideall();
+            });
+        }
+    });
         function renderEmpty() {
         //This function renders some HTML to the page explaining we don't have any articles to view
         //Using a joined array of HTML string data because it's easier to read/change than a
