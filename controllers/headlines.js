@@ -8,13 +8,15 @@ var Headline = require("../models/Headline");
 module.exports = {
     fetch: function(cb){
         scrape(function(data){
+            console.log("this is working");
             var articles = data;
+            console.log(data);
             for (var i=0; i < articles.length; i++){
                 articles[i].date = makeDate();
                 articles[i].saved = false;
             }
 
-            Headline.collection.insertMany(articles, {ordered:false}, function(err, docs){
+            Headline.insertMany(articles, {ordered:false}, function(err, docs){
                 cb(err, docs);
             });
         });

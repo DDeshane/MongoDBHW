@@ -2,7 +2,7 @@
 var scrape = require("../scripts/scrape");
 
 //Adds healines and notes from the controller
-var headlinerController = require("../controllers/headlines");
+var headlinesController = require("../controllers/headlines");
 var notesController = require("../controllers/notes");
 
 
@@ -50,7 +50,7 @@ module.exports = function(router){
     });
 
     router.patch("/api/headlines", function(req, res){
-        headlinerController.update(req.body, function(err, data){
+        headlinesController.update(req.body, function(err, data){
             res.json(data);
         });
     });
